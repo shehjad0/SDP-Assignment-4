@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content%}
+    {% if tasks %}
+    <div class="d-flex flex-wrap gap-4 m-4 justify-content-center w-75 mx-auto">
+      {% for each in tasks %}
+        <div class="card" style="width: 20rem;">
+          <div class="card-body">
+            <h3 class="card-title">{{each.task_title}}</h3>
+            <p class="card-text">{{each.task_assign_date}}</p>
+            <h6 style="font-weight: bold;">Description:</h6>
+            <p class="card-text">{{each.task_description}}</p>
+            <div class="d-flex gap-2" style="font-weight: bold;">
+              Categories:
+                {% for category in each.categories.all %}
+                  <p class="btn btn-sm btn-info">{{category.name}}</p>
+                {% endfor %}
+            </div>
+            {% if each.is_completed %}
+              <a class="btn btn-success disabled">completed</a>
+            {% else %}
+              <a class="btn btn-warning" href="{% url 'edit_task' each.id %}">Edit</a>
+              <a class="btn btn-danger" href="{% url 'delete_task' each.id %}">Delete</a>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <h4 class="my-4" style="width: 50%; margin: auto;">No data to show!</h4>
+  {% endif %}
+{% endblock %}
